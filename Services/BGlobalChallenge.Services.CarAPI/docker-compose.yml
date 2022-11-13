@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  database:
+      container_name: Cars
+      image: postgres:14.5-alpine
+      restart: unless-stopped
+      ports:
+        - "5432:5432"
+      env_file:
+        - .env
+      environment:
+        POSTGRES_USER: $DB_USER 
+        POSTGRES_PASSWORD: $DB_PASSWORD
+        POSTGRES_DB: $DB_DEFAULT
+        
+      networks:
+        - bglobal-network
+      volumes:
+        - dbdata:/var/lib/postgresql/data/
+        - ./Init.sql:/docker-entrypoint-initdb.d/Init.sql
+            
+networks:
+  bglobal-network:
+
+volumes:
+  dbdata:
+    name: bglobal
