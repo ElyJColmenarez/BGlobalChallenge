@@ -1,20 +1,28 @@
+using System.Collections;
+using System.Dynamic;
 using AutoMapper;
 using CarsAPI.DbContexts;
 using CarsAPI.Models;
 using CarsAPI.Models.Dto;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CarsAPI.Repository;
 
 public class CarRepository:ICarRepository
 {
     private readonly ApplicationDbContext _db;
+    private readonly string _regresApi;
+    private readonly string _param;
     private IMapper _mapper;
 
     public CarRepository(ApplicationDbContext db, IMapper mapper)
     {
         _db = db;
         _mapper = mapper;
+        _regresApi = "https://reqres.in/api/users";
+        _param = "users";
     }
     public async Task<IEnumerable<CarDto>> GetCars()
     {
@@ -62,5 +70,17 @@ public class CarRepository:ICarRepository
         {
             return false;
         }
+    }
+    
+    public async Task<JToken?> CallAPI()
+    {
+        HttpClient httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri(_regresApi);
+
+        HttpResponseMessage response = await httpClient.GetAsync(_regresApi);
+
+        var HttpsResponse = await response.Content.ReadAsStringAsync();
+        var JSONObject = JsonConvert.DeserializeObject<JObject>(HttpsResponse);
+        return JSONObject["data"];
     }
 }

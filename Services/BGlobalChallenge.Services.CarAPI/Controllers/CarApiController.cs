@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using CarsAPI.Models.Dto;
 using CarsAPI.Repository;
+using Newtonsoft.Json.Linq;
+
 namespace CarsAPI.Controllers;
 [Route("api/cars")]
 
@@ -55,6 +57,9 @@ public class CarApiController: ControllerBase
     {
         try
         {
+            JToken? regresApi = await _carRepository.CallAPI();
+            int number = new Random().Next(0, 5);
+            carDto.OwnerCar = regresApi[number]["first_name"] + " " + regresApi[number]["last_name"];
             CarDto model = await _carRepository.CreateUpdateCar(carDto);
             _response.Result = model;
         }
