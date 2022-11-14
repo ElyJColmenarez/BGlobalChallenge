@@ -22,7 +22,6 @@ public class CarRepository:ICarRepository
         _db = db;
         _mapper = mapper;
         _regresApi = "https://reqres.in/api/users";
-        _param = "users";
     }
     public async Task<IEnumerable<CarDto>> GetCars()
     {
@@ -45,6 +44,9 @@ public class CarRepository:ICarRepository
         }
         else
         {
+            JToken? regresApi = await CallAPI();
+            int number = new Random().Next(0, 5);
+            carDto.OwnerCar = regresApi[number]["first_name"] + " " + regresApi[number]["last_name"];
             _db.Cars.Add(car);
         }
 
