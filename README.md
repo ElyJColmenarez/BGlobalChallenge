@@ -29,8 +29,8 @@ al ejecutar el **docker-compose**
   docker-compose up
 ```
 
-Una vez que docker haya descargado la imagen y haya desplegado el contenedor
-debe el proyecto debe compilarse y ejecutarse desde el IDE de desarrollo 
+Una vez que docker haya descargado la imagen y haya desplegado el contenedor, 
+el proyecto debe compilarse y ejecutarse desde el IDE de desarrollo 
 **(Preferiblemente Rider)**
 
 Cuando el proyecto haya compilado e iniciado se desplegara el navegador 
